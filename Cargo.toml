@@ -2,7 +2,7 @@
 name = "pw-gen"
 description = "A password generator"
 version = "0.1.0"
-authors = "Chris<chris@the-johnsons.uk>"
+author = "Chris<chris@the-johnsons.uk>"
 readme = "README.md"
 edition = "2021"
 repository = "https://github.com/gordug/pw-gen.git"

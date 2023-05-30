@@ -52,6 +52,14 @@ impl PasswordGenerator for Generator {
 
 impl Generator {
     fn generate_password(&self) -> String {
+        if self.length < MIN_PASSWORD_LENGTH {
+            return format!("Password length must be at least {}", MIN_PASSWORD_LENGTH);
+        }
+
+        if self.allowed_chars.is_empty() {
+            return format!("Password must contain at least one of the following: special, numbers, lowercase, uppercase");
+        }
+
         let mut password = String::new();
         let mut valid = false;
         while !valid {
@@ -113,29 +121,29 @@ impl Generator {
         false
     }
 
-fn get_allowed_chars(&self) -> Vec<char> {
-    let mut allowed_chars = Vec::new();
-    if self.options.contains(&Special { required: false } ) || self.options.contains(&Special { required: true }) {
-        allowed_chars.extend(SPECIAL_CHARS.chars());
-    }
-    if self.options.contains(&Numbers { required: false }) || self.options.contains(&Numbers { required: true }) {
-        allowed_chars.extend(NUMERICAL_CHARS.chars());
-    }
-    if self.options.contains(&Lowercase { required: false }) || self.options.contains(&Lowercase { required: true }) {
-        allowed_chars.extend(LOWERCASE_CHARS.chars());
-    }
-    if self.options.contains(&Uppercase { required: false }) || self.options.contains(&Uppercase { required: true }){
-        allowed_chars.extend(UPPERCASE_CHARS.chars());
-    }
-    if self.options.contains(&NotSimilar) {
-        allowed_chars.retain(|c| !SIMILAR_CHARS.contains(*c));
-    }
-    if self.options.contains(&NotAmbiguous) {
-        allowed_chars = allowed_chars
-            .into_iter()
-            .filter(|c| !AMBIGUOUS_SPECIAL_CHARS.contains(*c))
-            .collect();
-    }
-    allowed_chars
+    fn get_allowed_chars(&self) -> Vec<char> {
+        let mut allowed_chars = Vec::new();
+        if self.options.contains(&Special { required: false } ) || self.options.contains(&Special { required: true }) {
+            allowed_chars.extend(SPECIAL_CHARS.chars());
+        }
+        if self.options.contains(&Numbers { required: false }) || self.options.contains(&Numbers { required: true }) {
+            allowed_chars.extend(NUMERICAL_CHARS.chars());
+        }
+        if self.options.contains(&Lowercase { required: false }) || self.options.contains(&Lowercase { required: true }) {
+            allowed_chars.extend(LOWERCASE_CHARS.chars());
+        }
+        if self.options.contains(&Uppercase { required: false }) || self.options.contains(&Uppercase { required: true }){
+            allowed_chars.extend(UPPERCASE_CHARS.chars());
+        }
+        if self.options.contains(&NotSimilar) {
+            allowed_chars.retain(|c| !SIMILAR_CHARS.contains(*c));
+        }
+        if self.options.contains(&NotAmbiguous) {
+            allowed_chars = allowed_chars
+                .into_iter()
+                .filter(|c| !AMBIGUOUS_SPECIAL_CHARS.contains(*c))
+                .collect();
+        }
+        allowed_chars
     }
 }

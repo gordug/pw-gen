@@ -84,6 +84,18 @@ fn it_works_without_ambiguous() {
     assert!(contains_no_ambiguous_chars(&password));
 }
 
+#[test]
+fn it_returns_warning_min_length() {
+    let password = Generator::new(7).generate();
+    assert_eq!(password, format!("Password length must be at least {}", MIN_PASSWORD_LENGTH));
+}
+
+#[test]
+fn it_returns_warning_no_options() {
+    let password = Generator::new(10).generate();
+    assert_eq!(password, format!("Password must contain at least one of the following: special, numbers, lowercase, uppercase"));
+}
+
 fn contains_no_special_chars(password: &String) -> bool {
     for c in password.chars() {
         for x in SPECIAL_CHARS.chars() {
