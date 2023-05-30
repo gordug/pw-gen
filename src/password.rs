@@ -10,5 +10,6 @@ pub trait PasswordGenerator {
     fn with_uppercase(&mut self, required: Option<bool>) -> &mut Self;
     fn without_similar(&mut self) -> &mut Self;
     fn without_ambiguous(&mut self) -> &mut Self;
+    fn without_sequential(&mut self) -> &mut Self;
     fn generate(&mut self) -> String;
 }

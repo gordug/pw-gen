@@ -11,6 +11,7 @@ fn it_works() {
         .with_uppercase(Some(true))
         .without_similar()
         .without_ambiguous()
+        .without_sequential()
         .generate();
     println!("{}", password);
     assert_eq!(password.len(), 10);
