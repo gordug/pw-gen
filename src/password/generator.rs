@@ -3,7 +3,7 @@ use rand::random;
 use PasswordOptions::{*};
 
 #[derive(Debug)]
-pub(crate) struct Generator {
+pub struct Generator {
     length: usize,
     options: Vec<PasswordOptions>,
     allowed_chars: Vec<char>,
