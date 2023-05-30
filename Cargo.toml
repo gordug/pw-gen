@@ -1,8 +1,12 @@
 [package]
 name = "pw-gen"
+description = "A password generator"
 version = "0.1.0"
-author = "gordug"
+author = "Chris<chris@the-johnsons.uk>"
+readme = "README.md"
 edition = "2021"
+repository = "https://github.com/gordug/pw-gen.git"
+license = "Apache-2.0"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
