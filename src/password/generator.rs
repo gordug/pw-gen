@@ -10,8 +10,6 @@ pub struct Generator {
 }
 
 impl PasswordGenerator for Generator {
-
-
     fn new(length: usize) -> Generator {
         Generator {
             length,
@@ -41,6 +39,10 @@ impl PasswordGenerator for Generator {
     }
     fn without_ambiguous(&mut self) -> &mut Generator {
         self.options.push(NotAmbiguous);
+        self
+    }
+    fn without_sequential(&mut self) -> &mut Generator {
+        self.options.push(NotSequential);
         self
     }
     fn generate(&mut self) -> String {
@@ -100,14 +102,24 @@ impl Generator {
             }
         }
         self.options.contains(&Special {required: false}) || has_special &&
-            self.options.contains(&Numbers {required: true}) || has_number &&
-            self.options.contains(&Lowercase {required: true}) || has_lowercase &&
-            self.options.contains(&Uppercase {required: true}) || has_uppercase
+            self.options.contains(&Numbers {required: false}) || has_number &&
+            self.options.contains(&Lowercase {required: false}) || has_lowercase &&
+            self.options.contains(&Uppercase {required: false}) || has_uppercase
     }
 
     fn is_sequential(&self, random_char: &char, password: String) -> bool {
+        if password.is_empty() {
+            return false;
+        }
         if self.options.contains(&NotSequential) {
-            let char_index = self.allowed_chars.binary_search(&random_char).unwrap();
+            let char_index_result = self.allowed_chars.binary_search(&random_char);
+            if char_index_result.is_err() {
+                return false;
+            }
+            let char_index = char_index_result.unwrap();
+            if char_index == 0 || char_index == self.allowed_chars.len() - 1 {
+                return false;
+            }
             let previous_char = self.allowed_chars[char_index - 1];
             let last_char = password.chars().last().unwrap();
             if previous_char == last_char {
